@@ -1,0 +1,125 @@
+Αα  Alpha   Νν  Nu
+Ββ  Beta    Ξξ  Xi
+Γγ  Gamma   Οο  Omicron
+Δδ  Delta   Ππ  Pi
+Εε  Epsilon Ρρ  Rho
+Ζζ  Zeta    Σσς Sigma
+Ηη  Eta     Ττ  Tau
+Θθ  Theta   Υυ  Upsilon
+Ιι  Iota    Φφ  Phi
+Κκ  Kappa   Χχ  Chi
+Λλ  Lambda  Ψψ  Psi
+Μμ  Mu      Ωω  Omega
+
+
+# LYST (Lower Your Score Today)
+
+## Ideas
+μ     : map (collection, function) -> collection
+σ     : sum (collection) -> value
+π     : product (collection) -> value
+τ     : foldl (collection, function) -> collection
+ψ     : filter (collection, function) -> collection
+ω     : print (value/collection) -> value/collection
+α     : list of args () -> collection
+ι     : current iterator counter -> int
+κ     : current iterator value -> value
+δ     : difference between current iterator value and previous (if first, then null) () -> value
+υ     : increment (value/collection) -> (value/collection)
+γ     : duplicate (value, n) -> collection
+ε     : unpack (collection) -> (value, ...)
+ο     : loop (value/collection) -> collection (of value infinitely repeated)
+θ     : creates empty list of size N (value) -> collection
+ξ     : join with newlines? (or with something else)
+
+
+≠     : not equal
+
+⤠     : interval from 1 (max) [1, max] -> collection
+⤞     : interval from 0 (max) [0, max] -> collection
+
+$N    : Nth argv (0 indexed) of $ collection.
+
+'#    : literal # character
+
+## Implicit
+
+(current scalar)     = args[0]
+(current collection) = args
+
+## Examples
+
+'' Problem
+Pyramid of Asterisks.
+
+    '' RUBY:
+    1.upto($*[0].to_i){|i|puts"*"*i}
+
+ξμθαπ'*υι
+   α          Take input (N)
+  θ           Creates an 'empty' list of size N
+ μ            Maps each element of the above to the following value
+     '*       Literal '*' character
+    π         Multiplied by
+        ι     Get the current iterator through the loop (the map in this case)
+       υ      Incremented by one
+ξ             Join the resultant collection with newlines
+              Implicit Output
+
+## Functions
+
+μ : Map 
+    (collection, function) -> collection
+
+θ : Init
+    (int) -> collection
+    returns a collection of size equal to the input, where each element is defaulted to something (null? 0? doesn't matter yet).
+
+α : Input
+    () -> value
+    returns either the collection of all inputs, or the single input value.
+
+π : Product
+    (value, value) -> value
+    multiplies the two values and returns the result.
+    (collection) -> value
+    multiplies the values of the collection and returns the result.
+
+σ : Sum
+    (value, value) -> value
+    adds the two values and returns the result.
+    (collection) -> value
+    adds the values of the collection and returns the result.
+
+ξ : Join
+    (value, collection) -> value
+    joins the collecton with the value and returns the result.
+    (collection) -> value
+    joins the collection with newlines (or ", "?) and returns the result.
+
+υ : Increment
+    (value) -> value
+    returns the value incremented by 1.
+    (collection) -> collection
+    return the collection where each element has been incremented by 1.
+
+ι : Iterator
+    () -> value
+    returns the current index of the inner-most loop currently being executed.
+
+κ : Current
+    () -> value
+    returns the current value of the inner-most loop currently being executed.
+
+δ : Difference
+    (value, value) -> value
+    returns the difference between the two values.
+    (collection) -> collection
+    returns a collection of 'delta's, differences between two elements in the original collection.
+    ???
+    () -> value
+    returns the difference between the current value and the previous value of the inner-most loop currently being executed
+
+' : Character
+    (value) -> string
+    returns the literal string of the character following the '.
