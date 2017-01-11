@@ -31,7 +31,7 @@
 ο     : loop (value/collection) -> collection (of value infinitely repeated)
 θ     : creates empty list of size N (value) -> collection
 ξ     : join with newlines? (or with something else)
-
+φ     : if
 
 ≠     : not equal
 
@@ -40,7 +40,20 @@
 
 $N    : Nth argv (0 indexed) of $ collection.
 
-'#    : literal # character
+
+φ : If
+    (value, function) -> value
+    returns the result of the function if value is truthy*. Otherwise returns value.
+    (collection, function) -> value
+    returns the result of the function if value is truthy*. Otherwise returns value.
+
+ψ : Reduce
+    (collection, function) -> collection
+    returns a collection from the first parameter where each element satisfies the function
+
+## Truthyness
+
+'True': numbers > 0, non-empty strings, non-empty collections
 
 ## Implicit
 
@@ -49,22 +62,35 @@ $N    : Nth argv (0 indexed) of $ collection.
 
 ## Examples
 
-'' Problem
-Pyramid of Asterisks.
+### Pyramid of Asterisks.
 
-    '' RUBY:
-    1.upto($*[0].to_i){|i|puts"*"*i}
+'' RUBY:
+1.upto($*[0].to_i){|i|puts"*"*i}
 
 ξμθαπ'*υι
-   α          Take input (N)
-  θ           Creates an 'empty' list of size N
- μ            Maps each element of the above to the following value
-     '*       Literal '*' character
-    π         Multiplied by
-        ι     Get the current iterator through the loop (the map in this case)
-       υ      Incremented by one
-ξ             Join the resultant collection with newlines
-              Implicit Output
+   α            Take input (N)
+  θ             Creates an 'empty' list of size N
+ μ              Maps each element of the above to the following value
+     '*         Literal '*' character
+    π           Multiplied by
+        ι       Get the current iterator through the loop (the map in this case)
+       υ        Incremented by one
+ξ               Join the resultant collection with newlines
+                Implicit Output
+
+### Truth Machine
+
+'' RUBY
+p a=$*[0];loop{p a}if a>0
+
+φαοωα
+ α              Gets input
+Φ               If it is greater than 0 
+  ο             Creates infinte loop of the following:
+   ω            Outputs the following
+    α           Original input (now confirmed to be > 0 (1))
+                Implicit output (if not looping, this will be value of if statement (0))
+
 
 ## Functions
 
@@ -78,6 +104,12 @@ Pyramid of Asterisks.
 α : Input
     () -> value
     returns either the collection of all inputs, or the single input value.
+
+ω : Output
+    (value) -> value
+    prints the value to STDOUT
+    (collection) -> collection
+    prints the collection to STDOUT, separated by ", "
 
 π : Product
     (value, value) -> value
@@ -123,3 +155,12 @@ Pyramid of Asterisks.
 ' : Character
     (value) -> string
     returns the literal string of the character following the '.
+
+ο : Cycle
+    (value) -> collection
+    Returns an infinite collection containing the value
+    (collection) -> collection
+    Returns an infinite loop of the collection
+    (function) -> ()
+    Performs the function forever.
+
