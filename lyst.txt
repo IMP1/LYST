@@ -1,39 +1,28 @@
-Αα  Alpha   Νν  Nu
-Ββ  Beta    Ξξ  Xi
-Γγ  Gamma   Οο  Omicron
-Δδ  Delta   Ππ  Pi
-Εε  Epsilon Ρρ  Rho
-Ζζ  Zeta    Σσς Sigma
-Ηη  Eta     Ττ  Tau
-Θθ  Theta   Υυ  Upsilon
-Ιι  Iota    Φφ  Phi
-Κκ  Kappa   Χχ  Chi
-Λλ  Lambda  Ψψ  Psi
-Μμ  Mu      Ωω  Omega
+Αα  Alpha       Νν  Nu
+Ββ  Beta        Ξξ  Xi
+Γγ  Gamma       Οο  Omicron
+Δδ  Delta       Ππ  Pi
+Εε  Epsilon     Ρρ  Rho
+Ζζ  Zeta        Σσς Sigma
+Ηη  Eta         Ττ  Tau
+Θθ  Theta       Υυ  Upsilon
+Ιι  Iota        Φφ  Phi
+Κκ  Kappa       Χχ  Chi
+Λλ  Lambda      Ψψ  Psi
+Μμ  Mu          Ωω  Omega
 
 
 # LYST (Lower Your Score Today)
 
 ## Ideas
-μ     : map (collection, function) -> collection
-σ     : sum (collection) -> value
-π     : product (collection) -> value
 τ     : foldl (collection, function) -> collection
 ψ     : filter (collection, function) -> collection
-ω     : print (value/collection) -> value/collection
-α     : list of args () -> collection
-ι     : current iterator counter -> int
-κ     : current iterator value -> value
-δ     : difference between current iterator value and previous (if first, then null) () -> value
-υ     : increment (value/collection) -> (value/collection)
 γ     : duplicate (value, n) -> collection
 ε     : unpack (collection) -> (value, ...)
-ο     : loop (value/collection) -> collection (of value infinitely repeated)
-θ     : creates empty list of size N (value) -> collection
-ξ     : join with newlines? (or with something else)
-φ     : if
+ζ     : length (collection) -> int
 
 ≠     : not equal
+=     : equal
 
 ⤠     : interval from 1 (max) [1, max] -> collection
 ⤞     : interval from 0 (max) [0, max] -> collection
@@ -41,11 +30,7 @@
 $N    : Nth argv (0 indexed) of $ collection.
 
 
-φ : If
-    (value, function) -> value
-    returns the result of the function if value is truthy*. Otherwise returns value.
-    (collection, function) -> value
-    returns the result of the function if value is truthy*. Otherwise returns value.
+
 
 ψ : Reduce
     (collection, function) -> collection
@@ -83,19 +68,54 @@ $N    : Nth argv (0 indexed) of $ collection.
 '' RUBY
 p a=$*[0];loop{p a}if a>0
 
-φαοωα
+φαοα
  α              Gets input
 Φ               If it is greater than 0 
   ο             Creates infinte loop of the following:
-   ω            Outputs the following
-    α           Original input (now confirmed to be > 0 (1))
-                Implicit output (if not looping, this will be value of if statement (0))
+   α            Original input (now confirmed to be > 0 (1))
+                Implicit output (if not infinitely looping, this will be value of if statement (0))
+
+### Marquee
+
+'' RUBY
+w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
+
+ξμσπ' ρβηαβαηιaβα
+         α          Get input
+        η           Get the tail elements (all but the first)
+       β            Get the first element of the tail (the supplied number)
+      ρ             Save this value in the variable `a`, and return it
+    '               The literal character ' ' (space)
+   π                Multiply this character by the supplied number
+          βα        The first input (supplied string)
+  σ                 Add the spacing to the supplied input
+ μ                  Go through this string and map each input to 
+               βα   The first input (supplied string)
+            η       A substring 
+             ι      From the current iterator counter
+              a     to the size provided
+ξ                   Join with newlines
+                    Implicit output
+
+### Blinking 12:00
+
+'' RUBY
+%w{12:00 --:--}.cycle{|a|puts a;sleep 0.5}
+
+μο{--:-- 12:00}τ.5κ
+  {--:-- 12:00}             List of the two strings
+ ο                          Loop it forever
+μ                           Map all values to the following
+                  κ         The current value
+               τ.5          Returned after .5 of a second
+                            Implicit output
 
 
 ## Functions
 
 μ : Map 
     (collection, function) -> collection
+    returns a collection of thunks
 
 θ : Init
     (int) -> collection
@@ -107,9 +127,9 @@ p a=$*[0];loop{p a}if a>0
 
 ω : Output
     (value) -> value
-    prints the value to STDOUT
+    prints the value to STDOUT.
     (collection) -> collection
-    prints the collection to STDOUT, separated by ", "
+    iterates through the collection, printing each to STDOUT.
 
 π : Product
     (value, value) -> value
@@ -148,19 +168,54 @@ p a=$*[0];loop{p a}if a>0
     returns the difference between the two values.
     (collection) -> collection
     returns a collection of 'delta's, differences between two elements in the original collection.
-    ???
-    () -> value
-    returns the difference between the current value and the previous value of the inner-most loop currently being executed
-
-' : Character
-    (value) -> string
-    returns the literal string of the character following the '.
 
 ο : Cycle
     (value) -> collection
     Returns an infinite collection containing the value
     (collection) -> collection
     Returns an infinite loop of the collection
-    (function) -> ()
-    Performs the function forever.
 
+φ : If
+    (value, function) -> value
+    returns the result of the function if value is truthy*. Otherwise returns value.
+    (collection, function) -> value
+    returns the result of the function if value is truthy*. Otherwise returns value.
+
+β : Head
+    (collection) -> value
+    Returns the first value in the collection.
+    (int, collection) -> value
+    returns the Nth value in the collection, where N is the first paramater.
+
+η : Tail
+    (collection) -> collection
+    Returns all but the first element in the supplied collection.
+    (int, collection) -> collection
+    Returns the sub-collection starting at the given index.
+    (int, int, collection) -> collection
+    Returns the sub-collection starting at the first argument, and going upto (exclusive) the second argument.
+
+ρ : Push
+    (value) -> value
+    Saves the value in the next avaiable value (using the letters from the english alphabet)
+
+τ : Pause
+    (value, value) -> value
+    pauses for the number of seconds specified by the first argument, and then returns the second argument.
+
+
+
+## Literals
+
+'  : Character
+    (value) -> string
+    returns the literal string of the character following the '.
+
+"" : String
+    (character, ...) -> string
+
+[] : Collection of values, space separated
+    (value, ...) -> collection
+
+{} : Collection of Strings, space separated
+    (string, ...) -> collection
