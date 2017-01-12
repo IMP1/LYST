@@ -73,7 +73,8 @@ p a=$*[0];loop{p a}if a>0
 Φ               If it is greater than 0 
   ο             Creates infinte loop of the following:
    α            Original input (now confirmed to be > 0 (1))
-                Implicit output (if not infinitely looping, this will be value of if statement (0))
+                Else returns the falsey value (0)
+                Implicit output of either infinte loop of 1s, or one 0.
 
 ### Marquee
 
@@ -102,12 +103,13 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
 '' RUBY
 %w{12:00 --:--}.cycle{|a|puts a;sleep 0.5}
 
-μο{--:-- 12:00}τ.5κ
+μο{--:-- 12:00}λτ.5κ
   {--:-- 12:00}             List of the two strings
  ο                          Loop it forever
 μ                           Map all values to the following
-                  κ         The current value
-               τ.5          Returned after .5 of a second
+               λ            A new thunk
+                   κ        The current value
+                τ.5         Returned after .5 of a second
                             Implicit output
 
 
@@ -115,7 +117,7 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
 
 μ : Map 
     (collection, function) -> collection
-    returns a collection of thunks
+    returns a collection of values equal to applying the function to each element of the original collection.
 
 θ : Init
     (int) -> collection
@@ -203,7 +205,9 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
     (value, value) -> value
     pauses for the number of seconds specified by the first argument, and then returns the second argument.
 
-
+λ : Thunk
+    (function) -> thunk
+    wraps the value returned by the function in a thunk.
 
 ## Literals
 

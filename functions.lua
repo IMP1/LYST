@@ -1,3 +1,5 @@
+require "socket"
+
 util = {}
 util.collection = function(table)
     -- TODO: have some collection object and metatable and stuff
@@ -17,10 +19,21 @@ util.is_value = function(something)
     return type(something) ~= "table" and type(something) ~= "function"
 
 end
+util.truthy = function(something)
+    if type(something) == "table" then return #something > 0 end
+    if type(something) == "number" then return something > 0 end
+end
+
+util.sleep = function(seconds)
+    socket.select(nil, nil, sec)
+end
 
 state = {}
 state.current_loop_index = -1
 state.current_loop_value = -1
+state.variables = {}
+state.VARIABLE_NAMES = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+
 
 function map(collection, f)
     --[[
@@ -31,7 +44,7 @@ function map(collection, f)
     for i, value in pairs(collection) do
         state.current_loop_index = i
         state.current_loop_value = value
-        result[i] = function() return f(value) end
+        result[i] = f(value)
     end
     return result
 end
@@ -71,7 +84,11 @@ function output(something)
     iterates through the collection, printing each to STDOUT.
     ]]
     if util.is_collection(something) then
-
+        for i, value in pairs(something) do
+            state.current_loop_index = i
+            state.current_loop_value = value
+            print(value)
+        end
     else
         print(something)
     end
@@ -195,18 +212,28 @@ function if(something, f)
     (collection, function) -> value
     returns the result of the function if value is truthy*. Otherwise returns value.
     ]]
+    if util.truthy(something) then
+        return f()
+    else
+        return something
+    end
 end
 
-function head()
+function head(a, b)
     --[[
     (collection) -> value
     Returns the first value in the collection.
     (int, collection) -> value
     returns the Nth value in the collection, where N is the first paramater.
     ]]
+    if util.is_collection(a) and b == nil then
+        return a[1]
+    elseif util.is_collection(b) and util.is_value(a) then
+        return b[a]
+    end
 end
 
-function tail(...)
+function tail(a, b, c)
     --[[
     (collection) -> collection
     Returns all but the first element in the supplied collection.
@@ -222,6 +249,8 @@ function push(value)
     (value) -> value
     Saves the value in the next avaiable value (using the letters from the english alphabet)
     ]]
+    table.insert(state.variables, value)
+    return value
 end
 
 function pause(time, value)
@@ -229,4 +258,15 @@ function pause(time, value)
     (value, value) -> value
     pauses for the number of seconds specified by the first argument, and then returns the second argument.
     ]]
+    util.sleep(time)
+    return value
+end
+
+
+function thunk(something)
+    --[[
+    (something) -> thunk
+    wraps the value returned by the function in a thunk.
+    ]]
+    return function() return something end
 end
