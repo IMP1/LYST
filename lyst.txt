@@ -20,6 +20,8 @@
 γ     : duplicate (value, n) -> collection
 ε     : unpack (collection) -> (value, ...)
 ζ     : length (collection) -> int
+?     : max (collection) -> value
+
 
 ≠     : not equal
 =     : equal
@@ -111,6 +113,14 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
                    κ        The current value
                 τ.5         Returned after .5 of a second
                             Implicit output
+
+
+### Longest Chain of 1s in binary representation
+
+'' RUBY
+->b{("%b%b"%[b,~b]).scan(/1+/).max.size}
+
+
 
 
 ## Functions
