@@ -42,11 +42,6 @@ $N    : Nth argv (0 indexed) of $ collection.
 
 'True': numbers > 0, non-empty strings, non-empty collections
 
-## Implicit
-
-(current scalar)     = args[0]
-(current collection) = args
-
 ## Examples
 
 ### Pyramid of Asterisks.
@@ -54,14 +49,14 @@ $N    : Nth argv (0 indexed) of $ collection.
 '' RUBY:
 1.upto($*[0].to_i){|i|puts"*"*i}
 
-ξμθαπ'*υι
-   α            Take input (N)
-  θ             Creates an 'empty' list of size N
+ξμυθαπ'*κ
+    α           Take input (N)
+   θ            Creates an list of 0 to N-1
+  υ             Increment each element so it's now 1 to N
  μ              Maps each element of the above to the following value
-     '*         Literal '*' character
-    π           Multiplied by
-        ι       Get the current iterator through the loop (the map in this case)
-       υ        Incremented by one
+      '*        Literal '*' character
+     π          Multiplied by
+        κ       The current value through the loop
 ξ               Join the resultant collection with newlines
                 Implicit Output
 
@@ -98,7 +93,7 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
              ι      From the current iterator counter
               a     to the size provided
 ξ                   Join with newlines
-                    Implicit output
+                    Implicit output`
 
 ### Blinking 12:00
 
@@ -121,6 +116,15 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
 ->b{("%b%b"%[b,~b]).scan(/1+/).max.size}
 
 
+## Types
+
+    int
+    real
+    string
+    collection
+    -----
+    any (any of the above)
+    value (any non-collection of the above)
 
 
 ## Functions
@@ -131,52 +135,69 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
 
 θ : Init
     (int) -> collection
-    returns a collection of size equal to the input, where each element is defaulted to something (null? 0? doesn't matter yet).
+    returns a collection of size equal to the input, where each element is defaulted to something (maybe 1 to N?).
 
 α : Input
     () -> value
     returns either the collection of all inputs, or the single input value.
 
 ω : Output
-    (value) -> value
+    (string) -> string
+    prints the value to STDOUT.
+    (int) -> int
+    prints the value to STDOUT.
+    (real) -> real
     prints the value to STDOUT.
     (collection) -> collection
     iterates through the collection, printing each to STDOUT.
 
 π : Product
-    (value, value) -> value
+    (int, int) -> int
     multiplies the two values and returns the result.
-    (collection) -> value
+    (real, int)  -> real
+    (int,  real) -> real
+    (real, real) -> real
+    multiplies the two values and returns the result.
+    (collection) -> int/real
     multiplies the values of the collection and returns the result.
 
 σ : Sum
-    (value, value) -> value
+    (int, int) -> int
     adds the two values and returns the result.
-    (collection) -> value
+    (real, int)  -> real
+    (int,  real) -> real
+    (real, real) -> real
+    adds the two values and returns the result.
+    (collection) -> int/real
     adds the values of the collection and returns the result.
 
 ξ : Join
-    (value, collection) -> value
+    (string, collection) -> string
     joins the collecton with the value and returns the result.
-    (collection) -> value
+    (collection) -> string
     joins the collection with newlines (or ", "?) and returns the result.
 
 υ : Increment
-    (value) -> value
+    (int) -> int
+    (real) -> real
     returns the value incremented by 1.
     (collection) -> collection
     return the collection where each element has been incremented by 1.
 
 ι : Iterator
-    () -> value
+    () -> int
     returns the current index of the inner-most loop currently being executed.
 
 κ : Current
-    () -> value
+    () -> any
     returns the current value of the inner-most loop currently being executed.
 
 δ : Difference
-    (value, value) -> value
+    (int, int) -> int
+    returns the difference between the two values.
+    (real, int)  -> real
+    (int,  real) -> real
+    (real, real) -> real
     returns the difference between the two values.
     (collection) -> collection
     returns a collection of 'delta's, differences between two elements in the original collection.
@@ -188,9 +209,7 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
     Returns an infinite loop of the collection
 
 φ : If
-    (value, function) -> value
-    returns the result of the function if value is truthy*. Otherwise returns value.
-    (collection, function) -> value
+    (any, function) -> value
     returns the result of the function if value is truthy*. Otherwise returns value.
 
 β : Head
@@ -208,11 +227,11 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
     Returns the sub-collection starting at the first argument, and going upto (exclusive) the second argument.
 
 ρ : Push
-    (value) -> value
+    (any) -> any
     Saves the value in the next avaiable value (using the letters from the english alphabet)
 
 τ : Pause
-    (value, value) -> value
+    (real, any) -> any
     pauses for the number of seconds specified by the first argument, and then returns the second argument.
 
 λ : Thunk
@@ -229,7 +248,7 @@ w=" "*(n=$*[1].to_i)+$*[0];w.size.times{|i|puts w[i,n]}
     (character, ...) -> string
 
 [] : Collection of values, space separated
-    (value, ...) -> collection
+    (any, ...) -> collection
 
 {} : Collection of Strings, space separated
     (string, ...) -> collection
